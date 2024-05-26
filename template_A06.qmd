@@ -218,9 +218,20 @@ max_temps <- read_tsv("state_max_temps.tsv") |>
 Calculate the average temperature for each month across the whole data frame (using the data for all three states together).
 
 ```{r}
+mean_temps_list <- list()
 
+for(month in 3:ncol(max_temps)){
+  mean_temp <- mean(max_temps[[month]])
+  mean_temps_list[[month]] <- mean_temp
+}
+
+mean_temps_df <- data.frame(
+  month = c('jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'),
+  mean_temp = unlist(mean_temps_list)
+)
+
+print(mean_temps_df)
 ```
-
 
 ### Part b (2 points)
 
@@ -233,7 +244,11 @@ Create three new data frames by slicing the data by state.
 No need to print any output here.
 
 ```{r}
+colorado_data <- max_temps[max_temps$state == "CO", ]
 
+ohio_data <- max_temps[max_temps$state == "OH", ]
+
+virginia_data <- max_temps[max_temps$state == "VA", ]
 ```
 
 
@@ -255,8 +270,16 @@ Note: This code should still run successfully even if the numbers were to change
 
 ```{r}
 
-```
+medians <- apply(colorado_data[,3:ncol(colorado_data)], 1, median)
 
+names(medians) <- c(colorado_data$year)
+
+max_index <- which.max(medians)
+min_index <- which.min(medians)
+
+print(paste0("The maximum median annual temperature of ", medians[max_index], " occurred in ", colorado_data$year[max_index], " and the minimum median annual temperature of ", medians[min_index], " occurred in ", colorado_data$year[min_index], "."))
+
+```
 
 ## Question 5 (5 points)
 
