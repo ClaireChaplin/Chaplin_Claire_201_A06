@@ -163,7 +163,6 @@ ppg_rounded <- sapply(ppg_list, function(x) round(x, 2))
 print(ppg_rounded)
 ```
 
-
 ## Question 3 (3 points)
 
 Consider the matrix `mat_rand` of random numbers below.
@@ -216,21 +215,11 @@ max_temps <- read_tsv("state_max_temps.tsv") |>
 ### Part a (2 points)
 
 Calculate the average temperature for each month across the whole data frame (using the data for all three states together).
-
 ```{r}
-mean_temps_list <- list()
 
-for(month in 3:ncol(max_temps)){
-  mean_temp <- mean(max_temps[[month]])
-  mean_temps_list[[month]] <- mean_temp
-}
+avg_temp <- apply(max_temps[,3:ncol(max_temps)], 2, mean)
 
-mean_temps_df <- data.frame(
-  month = c('jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'),
-  mean_temp = unlist(mean_temps_list)
-)
-
-print(mean_temps_df)
+```
 ```
 
 ### Part b (2 points)
@@ -244,12 +233,15 @@ Create three new data frames by slicing the data by state.
 No need to print any output here.
 
 ```{r}
+
 colorado_data <- max_temps[max_temps$state == "CO", ]
 
 ohio_data <- max_temps[max_temps$state == "OH", ]
 
 virginia_data <- max_temps[max_temps$state == "VA", ]
+
 ```
+
 
 
 ### Part c (5 points)
@@ -290,6 +282,18 @@ Example: The number 312 would return 6 (3 + 1 + 2)
 Run your function with 935068.
 
 ```{r}
+
+sum_digits <- function(num){
+  if (num == 0){
+    return(0)
+  }else{
+    last_digit <- num %% 10
+    trunc_num <- num %/% 10
+    return(last_digit + sum_digits(trunc_num))
+    }
+}
+
+sum_digits(935068)
 
 ```
 
